@@ -51,7 +51,7 @@ export default function OtpInput({ length = 6, value, onChange, disabled }: Prop
       {digits.map((d, i) => (
         <input
           key={i}
-          ref={(el) => (inputsRef.current[i] = el)}
+          // ref={(el) => (inputsRef.current[i] = el)}
           inputMode="numeric"
           maxLength={1}
           className="w-12 h-12 text-center text-lg border border-blue-200 rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"

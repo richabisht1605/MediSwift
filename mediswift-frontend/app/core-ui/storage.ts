@@ -17,7 +17,7 @@ function writeJson<T>(key: string, value: T) {
   try {
     window.localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // ignore
+    // ignore write errors
   }
 }
 
@@ -28,6 +28,7 @@ const KEYS = {
 };
 
 export const db = {
+  // Profiles
   getProfiles(): Profile[] {
     return readJson<Profile[]>(KEYS.profiles, []);
   },
@@ -41,6 +42,7 @@ export const db = {
     db.saveProfiles(profiles);
   },
 
+  // Bookings
   getBookings(): BookingRequest[] {
     return readJson<BookingRequest[]>(KEYS.bookings, []);
   },
@@ -54,6 +56,7 @@ export const db = {
     db.saveBookings(bookings);
   },
 
+  // Payments
   getPayments(): PaymentRecord[] {
     return readJson<PaymentRecord[]>(KEYS.payments, []);
   },
@@ -72,4 +75,5 @@ export function generateId(prefix: string): string {
   const random = Math.random().toString(36).slice(2, 8);
   return `${prefix}_${Date.now()}_${random}`;
 }
+
 
