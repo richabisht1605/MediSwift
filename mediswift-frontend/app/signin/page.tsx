@@ -24,7 +24,7 @@ export default function SignInPage() {
     e.preventDefault();
     setVerifying(true);
     setTimeout(() => {
-      router.push("/");
+      router.push("/dashboard");
     }, 800);
   }
 
@@ -47,7 +47,7 @@ export default function SignInPage() {
         {stage === "email" && (
           <>
             <input
-              className="border border-blue-200 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all"
+              className="border border-blue-200 text-gray-700 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all"
               type="email"
               placeholder="Email address"
               value={email}
@@ -63,13 +63,13 @@ export default function SignInPage() {
 
         {stage === "otp" && (
           <>
-            <input
+            {/* <input
               className="border border-blue-200 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all"
               type="text"
               placeholder="OTP (for accessibility)"
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0,6))}
-            />
+            /> */}
             <OtpInput value={otp} onChange={setOtp} />
             <div className="flex flex-col gap-3 mt-1">
               <button type="submit" disabled={!otp || verifying} className="w-full rounded-full bg-blue-700 text-white font-semibold px-6 py-3 transition active:scale-95 disabled:opacity-60 shadow-blue-200 shadow-md">{verifying ? "Verifying..." : "Submit"}</button>

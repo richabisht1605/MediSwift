@@ -13,15 +13,17 @@ export interface PatientProfile {
 
 export interface RiderProfile {
   id: string;
-  role: "rider";
   name: string;
-  phone: string;
-  email: string;
-  vehicleType: VehicleType;
+  vehicleType: string;
   vehicleNumber: string;
-  hasMedicalTraining: boolean;
-  address: string;
+  role: string;
+  imageUrl: string;
+  phone?: string;
+  email?: string;
+  hasMedicalTraining?: boolean;
+  address?: string;
 }
+
 
 export type Profile = PatientProfile | RiderProfile;
 
@@ -31,7 +33,14 @@ export interface BookingRequest {
   needDoctor: boolean;
   pickupAddress: string;
   hospitalAddress: string;
-  status: "searching" | "enroute_pickup" | "arrived_pickup" | "enroute_hospital" | "arrived_hospital" | "completed" | "cancelled";
+  status:
+    | "searching"
+    | "enroute_pickup"
+    | "arrived_pickup"
+    | "enroute_hospital"
+    | "arrived_hospital"
+    | "completed"
+    | "cancelled";
   assignedRiderId?: string;
   createdAt: number;
 }
@@ -44,4 +53,3 @@ export interface PaymentRecord {
   status: "pending" | "paid" | "failed";
   createdAt: number;
 }
-
