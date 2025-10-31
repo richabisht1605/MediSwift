@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AmbulanceCard from "../components/AmbulanceCard/AmbulanceCard";
-import { Profile, RiderProfile } from "../core-ui/types";
+import { RiderProfile } from "../core-ui/types";
 import "leaflet/dist/leaflet.css";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-const defaultCenter: [number, number] = [28.6139, 77.2090]; // New Delhi
+const defaultCenter: [number, number] = [28.6139, 77.209]; // New Delhi
 
 // ✅ Fake Rider Data (mocked)
 const mockRiders: RiderProfile[] = [
@@ -20,6 +22,7 @@ const mockRiders: RiderProfile[] = [
     email: "metroambulance@example.com",
     hasMedicalTraining: true,
     address: "Karol Bagh, New Delhi",
+    location: "Karol Bagh",
   },
   {
     id: "r2",
@@ -32,6 +35,7 @@ const mockRiders: RiderProfile[] = [
     email: "lifeline@example.com",
     hasMedicalTraining: true,
     address: "Saket, New Delhi",
+    location: "Saket",
   },
   {
     id: "r3",
@@ -44,6 +48,7 @@ const mockRiders: RiderProfile[] = [
     email: "rapidresponse@example.com",
     hasMedicalTraining: true,
     address: "Rohini, New Delhi",
+    location: "Rohini",
   },
 ];
 
@@ -72,7 +77,9 @@ export default function DashboardPage() {
 
         L.marker(pos)
           .addTo(map)
-          .bindPopup(`${r.name} • ${r.vehicleType.toUpperCase()} (${r.vehicleNumber})`);
+          .bindPopup(
+            `${r.name} • ${r.vehicleType.toUpperCase()} (${r.vehicleNumber})`
+          );
       });
     });
 
@@ -86,8 +93,15 @@ export default function DashboardPage() {
     alert(`Booking confirmed with ${riderName}! 🚑`);
   };
 
+  // ✅ Example: Sort nearby by address (handling undefined safely)
+  const sortedRiders = [...riders].sort((a, b) => {
+    const locA = (a.location || a.address || "").toLowerCase();
+    const locB = (b.location || b.address || "").toLowerCase();
+    return locA.localeCompare(locB);
+  });
+
   return (
-    <div className=" w-full bg-gray-50 flex items-center justify-center p-4">
+    <div className="w-full bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl border border-zinc-100 overflow-hidden">
         {/* Header */}
         <div className="p-6 pb-3">
@@ -108,17 +122,27 @@ export default function DashboardPage() {
         {/* Rider Cards */}
         <div className="p-6 mt-4">
           <h2 className="text-lg font-semibold mb-4 text-blue-700">
-            Available Ambulances
+            Nearby Ambulances
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {riders.map((r, idx) => (
-              <AmbulanceCard
-                key={r.id}
-                rider={r}
-                distanceKm={1.5 + idx * 0.7}
-                onSelect={() => handleBook(r.name)}
-              />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 relative">
+            {sortedRiders.slice(0, 3).map((r, idx) => (
+              <div key={r.id} className="relative">
+                <AmbulanceCard
+                  rider={r}
+                  distanceKm={1.5 + idx * 0.7}
+                  onSelect={() => window.location.assign(`/ambulances/${r.id}`)}
+                />
+                {idx === 2 && (
+                  <Link
+                    href="/ambulances"
+                    className="absolute right-[-16px] top-1/2 -translate-y-1/2 bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
+                    title="View All Ambulances"
+                  >
+                    <ArrowRight size={20} />
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
         </div>

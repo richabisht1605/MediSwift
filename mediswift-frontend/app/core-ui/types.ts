@@ -22,6 +22,7 @@ export interface RiderProfile {
   email?: string;
   hasMedicalTraining?: boolean;
   address?: string;
+  location?: string;
 }
 
 

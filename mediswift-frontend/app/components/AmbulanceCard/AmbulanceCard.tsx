@@ -2,7 +2,7 @@ import Image from "next/image";
 import { RiderProfile } from "@/app/core-ui/types";
 
 interface AmbulanceCardProps {
-  rider?: RiderProfile; // ✅ optional for mock fallback
+  rider?: RiderProfile;
   distanceKm?: number;
   onSelect?: () => void;
 }
@@ -12,7 +12,6 @@ export default function AmbulanceCard({
   distanceKm,
   onSelect,
 }: AmbulanceCardProps) {
-  // ✅ Mock data fallback
   const mockRider: RiderProfile = {
     id: "mock1",
     name: "City Ambulance Service",
@@ -31,7 +30,7 @@ export default function AmbulanceCard({
   return (
     <div className="w-full border rounded-xl shadow-md overflow-hidden text-center bg-white hover:shadow-lg transition">
       {/* Ambulance Image */}
-      <div className="relative w-full aspect-square">
+      <div className="relative h-[140px] w-full aspect-square">
         <Image
           src={displayRider.imageUrl}
           alt={displayRider.name}
@@ -50,15 +49,14 @@ export default function AmbulanceCard({
           {displayRider.vehicleNumber}
         </p>
 
-        {distanceKm && (
+        {distanceKm !== undefined && (
           <p className="text-sm text-gray-500 mt-1">
-            Distance: {distanceKm.toFixed(1)} km away
+            Distance: {distanceKm.toFixed(2)} km away
           </p>
         )}
 
         <p className="text-xs text-gray-500 mt-1">{displayRider.address}</p>
 
-        {/* Book Button */}
         <button
           onClick={onSelect || (() => alert(`Booking ${displayRider.name} 🚑`))}
           className="bg-blue-600 text-white font-medium py-2 px-4 rounded-lg mt-3 hover:bg-blue-700 transition"
